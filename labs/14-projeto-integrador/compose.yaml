@@ -1,0 +1,65 @@
+name: lab14-projeto-integrador
+
+services:
+  db:
+    image: postgres:16-alpine
+    env_file: .env
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - rede-integrador
+
+  pgadmin:
+    image: dpage/pgadmin4:8
+    env_file: .env
+    environment:
+      # SERVER_MODE fica no padrão (True): é o modo correto quando o
+      # pgAdmin roda num container exposto por porta, não em uso desktop local.
+      PGADMIN_CONFIG_CHECK_EMAIL_DELIVERABILITY: "False"
+    ports:
+      - "8083:80"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+      - ./pgadmin/servers.json:/pgadmin4/servers.json:ro
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - rede-integrador
+
+  backend:
+    build: ./backend
+    env_file: .env
+    environment:
+      PGHOST: db
+      PGUSER: ${POSTGRES_USER}
+      PGPASSWORD: ${POSTGRES_PASSWORD}
+      PGDATABASE: ${POSTGRES_DB}
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - rede-integrador
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "8084:80"
+    depends_on:
+      - backend
+    networks:
+      - rede-integrador
+
+volumes:
+  pgdata:
+  pgadmin_data:
+
+networks:
+  rede-integrador:
+    driver: bridge

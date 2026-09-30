@@ -1,0 +1,13 @@
+{
+  "Servers": {
+    "1": {
+      "Name": "Lab 10 - Postgres via Compose",
+      "Group": "Unifeg",
+      "Host": "db",
+      "Port": 5432,
+      "MaintenanceDB": "lab_sistemas_distribuidos",
+      "Username": "unifeg",
+      "SSLMode": "prefer"
+    }
+  }
+}

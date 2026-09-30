@@ -1,0 +1,18 @@
+body {
+  font-family: Arial, sans-serif;
+  background: #f3f3f3;
+  color: #262626;
+  display: flex;
+  justify-content: center;
+  padding: 3rem 1rem;
+}
+main {
+  max-width: 640px;
+  background: #ffffff;
+  border-top: 6px solid #c00;
+  border-radius: 4px;
+  padding: 2rem;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+}
+h1 { color: #c00; }
+code { background: #eee; padding: 0 4px; }

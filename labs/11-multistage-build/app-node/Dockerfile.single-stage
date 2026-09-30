@@ -1,0 +1,15 @@
+# Versão INGÊNUA (single-stage) — só para comparação de tamanho.
+# Problema: a imagem final carrega o TypeScript, o código-fonte .ts e a
+# imagem completa do node:20 (não a alpine), mesmo eles não sendo
+# necessários para RODAR a aplicação já compilada.
+FROM node:20
+
+WORKDIR /app
+COPY package.json ./
+RUN npm install
+COPY tsconfig.json ./
+COPY src ./src
+RUN npm run build
+
+EXPOSE 5000
+CMD ["npm", "start"]

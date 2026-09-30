@@ -1,0 +1,19 @@
+name: lab12-react-stack
+
+services:
+  react-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./app-react:/app                 # bind mount: código-fonte do host
+      - node_modules_dev:/app/node_modules # volume anônimo: NÃO deixa o bind
+                                          # mount de cima apagar o node_modules
+                                          # instalado dentro da imagem
+    environment:
+      CHOKIDAR_USEPOLLING: "true"
+
+volumes:
+  node_modules_dev:

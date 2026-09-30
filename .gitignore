@@ -1,0 +1,19 @@
+# Versão do professor (gabaritos) — não publicar
+docs/Roteiro_Docker_Professor.docx
+docs/~$*
+
+# Gerador dos .docx (contém os gabaritos no código-fonte) — não publicar
+gerador/
+
+# Ambiente virtual Python
+.env/
+
+# Prompt interno usado para gerar o material
+prompt.md
+
+# Node
+node_modules/
+
+# Arquivos de sistema
+Thumbs.db
+.DS_Store

@@ -1,0 +1,18 @@
+.container {
+  font-family: system-ui, sans-serif;
+  max-width: 640px;
+  margin: 3rem auto;
+  padding: 2rem;
+  border-top: 6px solid #61dafb;
+  background: #1a1a2e;
+  color: #e6e6e6;
+  border-radius: 6px;
+}
+button {
+  background: #61dafb;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}

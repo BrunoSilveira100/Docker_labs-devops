@@ -1,0 +1,13 @@
+{
+  "name": "backend-lab14",
+  "version": "1.0.0",
+  "private": true,
+  "description": "API do projeto integrador - CRUD minimo de alunos sobre PostgreSQL",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "dependencies": {
+    "pg": "^8.12.0"
+  }
+}

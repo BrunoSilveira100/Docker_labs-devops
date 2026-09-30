@@ -1,0 +1,30 @@
+name: lab13-registry-seguranca
+
+services:
+  registry:
+    image: registry:2
+    ports:
+      - "5000:5000"
+    volumes:
+      - registry_data:/var/lib/registry
+
+  app:
+    build: ./app
+    ports:
+      - "6000:6000"
+    environment:
+      DB_PASSWORD_FILE: /run/secrets/db_password
+    secrets:
+      - db_password
+    deploy:
+      resources:
+        limits:
+          cpus: "0.50"
+          memory: 128M
+
+secrets:
+  db_password:
+    file: ./secrets/db_password.txt
+
+volumes:
+  registry_data:

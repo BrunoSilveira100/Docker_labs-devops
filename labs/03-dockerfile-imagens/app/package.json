@@ -1,0 +1,10 @@
+{
+  "name": "app-fundamentos-dockerfile",
+  "version": "1.0.0",
+  "private": true,
+  "description": "App minima para a pratica de construcao de imagens com Dockerfile",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  }
+}

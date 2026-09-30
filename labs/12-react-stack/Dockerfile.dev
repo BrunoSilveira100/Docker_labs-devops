@@ -1,0 +1,10 @@
+# Ambiente de DESENVOLVIMENTO: node_modules fica DENTRO da imagem
+# (instalado no build), o código-fonte vem por bind mount no compose.yaml.
+FROM node:20-alpine
+
+WORKDIR /app
+COPY app-react/package.json ./
+RUN npm install
+
+EXPOSE 5173
+CMD ["npm", "run", "dev"]
