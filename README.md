@@ -9,6 +9,7 @@ Este repositório traz a minha execução das 14 práticas do roteiro. Cada lab 
 rodado e validado no meu ambiente. Também apliquei boas práticas de produção onde
 o objetivo do lab permitia, e documentei o que mudei e por quê.
 
+- **Documentação acadêmica (Word):** [`docs/Documentacao_Projeto_Docker_Bruno_Silveira.docx`](docs/Documentacao_Projeto_Docker_Bruno_Silveira.docx)
 - **Evidências e resultados medidos:** [`EVIDENCIAS.md`](EVIDENCIAS.md)
 - **Documentação de cada prática:** `labs/<NN>-*/README.md`
 
