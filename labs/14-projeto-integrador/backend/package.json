@@ -1,8 +1,9 @@
 {
   "name": "backend-lab14",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": true,
-  "description": "API do projeto integrador - CRUD minimo de alunos sobre PostgreSQL",
+  "description": "Lab 14: API REST de alunos sobre PostgreSQL (Bruno Silveira)",
+  "author": "Bruno Silveira",
   "main": "src/index.js",
   "scripts": {
     "start": "node src/index.js"

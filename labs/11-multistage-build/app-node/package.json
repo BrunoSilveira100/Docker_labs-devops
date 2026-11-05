@@ -1,8 +1,9 @@
 {
   "name": "app-multistage",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": true,
-  "description": "API minima em TypeScript para comparar build single-stage x multi-stage",
+  "description": "Lab 11: API TypeScript para comparar build single-stage x multi-stage",
+  "author": "Bruno Silveira",
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",

@@ -1,13 +1,15 @@
 {
   "Servers": {
     "1": {
-      "Name": "Lab 10 - Postgres via Compose",
-      "Group": "Unifeg",
+      "Name": "Lab 10 · Postgres (Bruno Silveira)",
+      "Group": "Unifeg 2026B — Bruno Silveira",
+      "Comment": "Servidor pré-cadastrado via servers.json. Host 'db' = nome do serviço no Compose. A senha é pedida na 1a conexão (POSTGRES_PASSWORD do .env).",
       "Host": "db",
       "Port": 5432,
       "MaintenanceDB": "lab_sistemas_distribuidos",
       "Username": "unifeg",
-      "SSLMode": "prefer"
+      "SSLMode": "prefer",
+      "ConnectionTimeout": 10
     }
   }
 }

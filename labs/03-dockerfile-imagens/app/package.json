@@ -1,9 +1,12 @@
 {
-  "name": "app-fundamentos-dockerfile",
+  "name": "app-fundamentos",
   "version": "1.0.0",
   "private": true,
-  "description": "App minima para a pratica de construcao de imagens com Dockerfile",
+  "description": "Lab 03: API HTTP minima em Node.js para a primeira imagem propria (Bruno Silveira)",
+  "author": "Bruno Silveira",
+  "license": "UNLICENSED",
   "main": "server.js",
+  "engines": { "node": ">=20" },
   "scripts": {
     "start": "node server.js"
   }

@@ -1,7 +1,7 @@
 FROM node:20-alpine
 
 LABEL org.opencontainers.image.title="backend-lab07" \
-      org.opencontainers.image.description="API Node.js atras do proxy reverso Nginx (Labs 07/08)" \
+      org.opencontainers.image.description="API Node.js atras do proxy reverso Nginx (Lab 07)" \
       org.opencontainers.image.authors="Bruno Silveira"
 
 ENV NODE_ENV=production \

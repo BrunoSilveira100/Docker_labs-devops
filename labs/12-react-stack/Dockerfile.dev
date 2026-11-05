@@ -1,10 +1,14 @@
-# Ambiente de DESENVOLVIMENTO: node_modules fica DENTRO da imagem
-# (instalado no build), o código-fonte vem por bind mount no compose.yaml.
+# Ambiente de DESENVOLVIMENTO (Lab 12): o node_modules fica DENTRO da imagem
+# (instalado no build) e o código-fonte chega pelo bind mount do compose.yaml.
+# Roda como root de propósito: com bind mount no Windows/WSL2, um usuário
+# não-root pode não conseguir gravar o cache do Vite na pasta montada.
+# Em produção isso não vale (veja o Dockerfile).
 FROM node:20-alpine
-
+LABEL org.opencontainers.image.title="app-react-lab12-dev" \
+      org.opencontainers.image.description="Lab 12 - Vite dev server com hot reload" \
+      org.opencontainers.image.authors="Bruno Silveira"
 WORKDIR /app
 COPY app-react/package.json ./
 RUN npm install
-
 EXPOSE 5173
 CMD ["npm", "run", "dev"]

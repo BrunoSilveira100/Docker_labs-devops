@@ -1,3 +1,6 @@
+# Prática 12 — ambiente de DESENVOLVIMENTO React (Vite + hot reload)
+# Bruno Silveira · Unifeg 2026B
+# Produção não usa este arquivo: veja o Dockerfile (multi-stage + Nginx).
 name: lab12-react-stack
 
 services:
@@ -5,15 +8,21 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.dev
+    image: app-react-lab12:dev
     ports:
       - "5173:5173"
     volumes:
-      - ./app-react:/app                 # bind mount: código-fonte do host
-      - node_modules_dev:/app/node_modules # volume anônimo: NÃO deixa o bind
-                                          # mount de cima apagar o node_modules
-                                          # instalado dentro da imagem
+      - ./app-react:/app                    # bind mount: o código do host entra no container
+      - node_modules_dev:/app/node_modules  # volume nomeado: impede que o bind mount
+                                            # acima esconda o node_modules da imagem
     environment:
-      CHOKIDAR_USEPOLLING: "true"
+      CHOKIDAR_USEPOLLING: "true"           # eventos de arquivo não atravessam o WSL2: usa polling
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:5173/"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 15s
 
 volumes:
   node_modules_dev:

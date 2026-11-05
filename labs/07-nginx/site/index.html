@@ -2,20 +2,66 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8" />
-  <title>Unifeg — Nginx em container</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="author" content="Bruno Silveira" />
+  <title>Lab 07 · Nginx proxy reverso — Bruno Silveira</title>
   <style>
-    body { font-family: Arial, sans-serif; background: #0d1b2a; color: #e0e6ed; display: flex; justify-content: center; padding: 3rem 1rem; }
-    main { max-width: 640px; background: #1b2a3d; border-top: 6px solid #009639; border-radius: 4px; padding: 2rem; }
-    h1 { color: #4caf50; }
-    a { color: #7fd3ff; }
-    code { background: #0d1b2a; padding: 0 4px; }
+    /* Bruno Silveira — tema "grafite + verde" para o Nginx */
+    :root { --fundo:#11161c; --cartao:#1a222b; --texto:#dfe6ec; --suave:#8b99a6; --verde:#3fb27f; --link:#7cc4ff; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family:"Segoe UI",system-ui,sans-serif; line-height:1.55; background:var(--fundo); color:var(--texto); display:flex; justify-content:center; padding:3rem 1rem; }
+    main { width:100%; max-width:680px; background:var(--cartao); border-left:6px solid var(--verde); border-radius:6px; padding:2rem 2.25rem; }
+    .selo { margin:0; font-size:.8rem; letter-spacing:.04em; text-transform:uppercase; color:var(--suave); }
+    h1 { margin:.4rem 0 0; color:var(--verde); font-size:1.6rem; }
+    h2 { font-size:1.05rem; margin:1.6rem 0 .4rem; }
+    .autor { margin:.2rem 0 0; font-weight:600; color:var(--suave); }
+    a { color:var(--link); }
+    code, pre { font-family:Consolas,"Cascadia Mono",monospace; background:var(--fundo); border-radius:3px; }
+    code { padding:0 4px; } pre { padding:.6rem .8rem; overflow-x:auto; }
+    .fluxo { display:flex; flex-wrap:wrap; gap:.4rem; align-items:center; font-family:Consolas,monospace; font-size:.9rem; }
+    .fluxo span { background:var(--fundo); padding:.3rem .6rem; border-radius:4px; }
+    #resposta { min-height:2.5rem; white-space:pre-wrap; }
+    button { background:var(--verde); color:#0b1a12; border:0; border-radius:4px; padding:.5rem 1rem; font-weight:700; cursor:pointer; }
   </style>
 </head>
 <body>
   <main>
-    <h1>Servido pelo Nginx</h1>
-    <p>Página estática de <code>site/</code>. Veja também o
-       <a href="/api/status">proxy reverso para a API</a> em <code>/api/</code>.</p>
+    <p class="selo">Prática 07 · Sistemas Distribuídos · Unifeg 2026B</p>
+    <h1>Nginx como servidor estático e proxy reverso</h1>
+    <p class="autor">Bruno Silveira</p>
+
+    <h2>Caminho de uma requisição <code>/api/*</code></h2>
+    <div class="fluxo">
+      <span>navegador</span>→<span>:8081 nginx</span>→<span>backend:4000</span>
+    </div>
+    <p>O Nginx encontra o container <code>backend</code> pelo nome, usando o DNS da rede
+       bridge customizada. O backend não publica nenhuma porta no host: o único caminho até ele é o proxy.</p>
+
+    <h2>Teste ao vivo</h2>
+    <p>
+      <button type="button" data-rota="/api/status">GET /api/status</button>
+      <button type="button" data-rota="/api/info">GET /api/info</button>
+    </p>
+    <pre id="resposta">Clique em um botão para chamar a API através do proxy.</pre>
+
+    <h2>Pela linha de comando</h2>
+    <pre>curl.exe -i http://localhost:8081/api/status</pre>
   </main>
+
+  <script>
+    document.querySelectorAll("button[data-rota]").forEach((botao) => {
+      botao.addEventListener("click", async () => {
+        const saida = document.getElementById("resposta");
+        saida.textContent = "Consultando " + botao.dataset.rota + "...";
+        try {
+          const r = await fetch(botao.dataset.rota);
+          const corpo = await r.json();
+          saida.textContent = "HTTP " + r.status + "\n" + JSON.stringify(corpo, null, 2);
+        } catch (e) {
+          saida.textContent = "Falha: " + e;
+        }
+      });
+    });
+  </script>
 </body>
 </html>

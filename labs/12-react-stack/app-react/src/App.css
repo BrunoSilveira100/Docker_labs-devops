@@ -1,18 +1,71 @@
+/* Lab 12 · Bruno Silveira — tema "ardósia + violeta" */
+:root {
+  --fundo: #13121a;
+  --cartao: #1e1c29;
+  --texto: #e7e5ef;
+  --suave: #9a96ad;
+  --violeta: #a88bff;
+  --dev: #f5b14c;
+  --prod: #4cc38a;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--fundo);
+  color: var(--texto);
+  font-family: "Segoe UI", system-ui, sans-serif;
+  line-height: 1.55;
+}
+
 .container {
-  font-family: system-ui, sans-serif;
-  max-width: 640px;
+  max-width: 660px;
   margin: 3rem auto;
-  padding: 2rem;
-  border-top: 6px solid #61dafb;
-  background: #1a1a2e;
-  color: #e6e6e6;
+  padding: 2rem 2.25rem;
+  background: var(--cartao);
+  border-left: 6px solid var(--violeta);
   border-radius: 6px;
 }
+
+.selo {
+  margin: 0;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--suave);
+}
+
+h1 { margin: 0.3rem 0 0; color: var(--violeta); }
+.autor { margin: 0.1rem 0 1.2rem; font-weight: 600; color: var(--suave); }
+
+.modo {
+  padding: 0.5rem 0.8rem;
+  border-radius: 4px;
+  background: var(--fundo);
+  border-left: 4px solid currentColor;
+}
+.modo.dev { color: var(--dev); }
+.modo.prod { color: var(--prod); }
+
+code {
+  font-family: Consolas, "Cascadia Mono", monospace;
+  background: var(--fundo);
+  padding: 0 4px;
+  border-radius: 3px;
+}
+
 button {
-  background: #61dafb;
+  background: var(--violeta);
+  color: #171225;
   border: none;
   padding: 0.6rem 1.2rem;
   border-radius: 4px;
   cursor: pointer;
-  font-weight: bold;
+  font-weight: 700;
+}
+
+@media (max-width: 640px) {
+  .container { margin: 0; border-radius: 0; padding: 1.25rem 1rem; }
 }

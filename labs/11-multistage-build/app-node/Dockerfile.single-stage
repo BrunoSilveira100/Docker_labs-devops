@@ -1,4 +1,5 @@
-# Versão INGÊNUA (single-stage) — só para comparação de tamanho.
+# Versão INGÊNUA (single-stage), mantida ruim DE PROPÓSITO para a comparação de tamanho.
+# (Bruno Silveira: a única alteração aqui foi a ENV IMAGEM_VARIANTE, para a API dizer qual imagem respondeu.)
 # Problema: a imagem final carrega o TypeScript, o código-fonte .ts e a
 # imagem completa do node:20 (não a alpine), mesmo eles não sendo
 # necessários para RODAR a aplicação já compilada.
@@ -11,5 +12,6 @@ COPY tsconfig.json ./
 COPY src ./src
 RUN npm run build
 
+ENV IMAGEM_VARIANTE=single-stage
 EXPOSE 5000
 CMD ["npm", "start"]

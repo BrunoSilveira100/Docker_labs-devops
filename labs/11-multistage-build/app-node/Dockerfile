@@ -17,6 +17,7 @@ LABEL org.opencontainers.image.title="app-multistage" \
       org.opencontainers.image.description="Lab 11 - API TypeScript compilada (multi-stage)" \
       org.opencontainers.image.authors="Bruno Silveira"
 ENV NODE_ENV=production \
+    IMAGEM_VARIANTE=multi-stage \
     PORTA=5000
 WORKDIR /app
 COPY package.json ./

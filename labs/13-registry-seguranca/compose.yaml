@@ -1,30 +1,47 @@
+# Prática 13 — Registry local, segurança e troubleshooting
+# Bruno Silveira · Unifeg 2026B
 name: lab13-registry-seguranca
 
 services:
   registry:
     image: registry:2
     ports:
-      - "5000:5000"
+      - "5000:5000"            # localhost:5000 é tratado como registry "inseguro" permitido
     volumes:
       - registry_data:/var/lib/registry
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:5000/v2/"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    restart: unless-stopped
 
   app:
     build: ./app
+    image: app-lab13:1.0
     ports:
-      - "6000:6000"
+      - "6000:6000"            # 6000 é bloqueada pelos navegadores: teste com curl
     environment:
-      DB_PASSWORD_FILE: /run/secrets/db_password
+      DB_PASSWORD_FILE: /run/secrets/db_password   # o CAMINHO, nunca o valor
     secrets:
       - db_password
+    read_only: true            # sistema de arquivos da imagem somente leitura
+    tmpfs:
+      - /tmp
+    cap_drop:
+      - ALL                    # a app não precisa de nenhuma capability do kernel
+    security_opt:
+      - no-new-privileges:true
     deploy:
       resources:
         limits:
           cpus: "0.50"
           memory: 128M
+    restart: unless-stopped
 
 secrets:
   db_password:
-    file: ./secrets/db_password.txt
+    file: ./secrets/db_password.txt   # exemplo didático; segredo real NUNCA vai para o git
 
 volumes:
   registry_data:

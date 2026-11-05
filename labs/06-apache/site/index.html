@@ -2,15 +2,43 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8" />
-  <title>Unifeg — Apache em container</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="author" content="Bruno Silveira" />
+  <title>Lab 06 · Apache HTTPD em container — Bruno Silveira</title>
   <link rel="stylesheet" href="estilo.css" />
 </head>
 <body>
   <main>
-    <h1>Servido pelo Apache HTTP Server</h1>
-    <p>Esta página está em <code>site/</code> no host e foi mapeada por
-       bind mount para <code>/usr/local/apache2/htdocs</code> dentro do container.</p>
-    <p>Edite este arquivo e recarregue a página — não é preciso reconstruir imagem nenhuma.</p>
+    <p class="selo">Prática 06 · Sistemas Distribuídos · Unifeg 2026B</p>
+    <h1>Apache HTTP Server 2.4 em container</h1>
+    <p class="autor">Bruno Silveira</p>
+
+    <section>
+      <h2>Como esta página chega até você</h2>
+      <ol>
+        <li>O arquivo <code>site/index.html</code> está no <strong>host</strong> (Windows).</li>
+        <li>Um <em>bind mount</em> mapeia <code>site/</code> para
+            <code>/usr/local/apache2/htdocs</code> dentro do container.</li>
+        <li>O <code>httpd.conf</code> customizado também é montado, em modo somente leitura.</li>
+        <li>A porta 80 do container é publicada na porta <code>8080</code> do host.</li>
+      </ol>
+    </section>
+
+    <section>
+      <h2>Como provar que a configuração é a minha</h2>
+      <pre>curl.exe -i http://localhost:8080</pre>
+      <p>A resposta traz os cabeçalhos <code>X-Servido-Por</code> e
+         <code>X-Autor</code>, definidos no meu <code>httpd.conf</code>.
+         A imagem oficial não tem esses cabeçalhos.</p>
+    </section>
+
+    <section>
+      <h2>Teste de bind mount</h2>
+      <p>Edite este arquivo com o container rodando e recarregue a página.
+         A mudança aparece na hora, sem rebuild e sem reiniciar o container.</p>
+    </section>
+
+    <footer>Servido por <code>httpd:2.4</code> · formato de log <code>unifeg</code> com tempo de resposta em µs</footer>
   </main>
 </body>
 </html>

@@ -1,53 +1,113 @@
-.container {
-  font-family: system-ui, sans-serif;
-  max-width: 640px;
-  margin: 3rem auto;
-  padding: 2rem;
-  border-top: 6px solid #61dafb;
-  background: #1a1a2e;
-  color: #e6e6e6;
-  border-radius: 6px;
-}
-button {
-  background: #61dafb;
-  border: none;
-  padding: 0.6rem 1.2rem;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: bold;
-}
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 1rem;
-}
-th, td {
-  text-align: left;
-  padding: 0.4rem 0.6rem;
-  border-bottom: 1px solid #333;
+/* Projeto Integrador · Bruno Silveira — tema "noite + âmbar" */
+:root {
+  --fundo: #0f1419;
+  --cartao: #182029;
+  --texto: #e4e9ee;
+  --suave: #8d9aa7;
+  --linha: #26313c;
+  --ambar: #f0a63a;
+  --erro: #ff8a7a;
+  color-scheme: dark;
 }
 
-.autor {
-  color: #61dafb;
-  font-size: 0.9rem;
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--fundo);
+  color: var(--texto);
+  font-family: "Segoe UI", system-ui, sans-serif;
+  line-height: 1.5;
 }
+
+.container {
+  max-width: 820px;
+  margin: 2.5rem auto;
+  padding: 2rem 2.25rem;
+  background: var(--cartao);
+  border-left: 6px solid var(--ambar);
+  border-radius: 6px;
+}
+
+.selo {
+  margin: 0;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--suave);
+}
+
+h1 { margin: 0.3rem 0 0; color: var(--ambar); }
+h2 { font-size: 1.05rem; margin: 2rem 0 0.6rem; }
+.autor { margin: 0.1rem 0 0; font-weight: 600; color: var(--suave); }
+
+.pilha {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  align-items: center;
+  font-family: Consolas, monospace;
+  font-size: 0.85rem;
+  color: var(--suave);
+}
+.pilha span { background: var(--fundo); padding: 0.2rem 0.55rem; border-radius: 4px; color: var(--texto); }
 
 .cadastro {
   display: grid;
-  grid-template-columns: 2fr 1fr 70px auto;
-  gap: 0.5rem;
-  margin-top: 1.5rem;
+  grid-template-columns: 2fr 1fr 1.6fr 80px auto;
+  gap: 0.6rem;
+  align-items: end;
 }
 
-.cadastro input {
+.cadastro label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.8rem;
+  color: var(--suave);
+}
+
+.cadastro input,
+.cadastro select {
   padding: 0.5rem;
   border-radius: 4px;
-  border: 1px solid #333;
-  background: #0f0f1f;
-  color: #e6e6e6;
+  border: 1px solid var(--linha);
+  background: var(--fundo);
+  color: var(--texto);
+  font: inherit;
 }
 
-button:disabled {
-  opacity: 0.6;
-  cursor: wait;
+button {
+  background: var(--ambar);
+  color: #1d1406;
+  border: none;
+  padding: 0.55rem 1.1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 700;
+}
+button:disabled { opacity: 0.6; cursor: wait; }
+
+.aviso { margin-top: 0.7rem; color: var(--ambar); }
+.erro { color: var(--erro); }
+
+.resumo {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.resumo li { background: var(--fundo); border-radius: 4px; padding: 0.35rem 0.7rem; font-size: 0.9rem; }
+.resumo strong { color: var(--ambar); margin-right: 0.25rem; }
+
+table { width: 100%; border-collapse: collapse; }
+th, td { text-align: left; padding: 0.45rem 0.6rem; border-bottom: 1px solid var(--linha); }
+th { color: var(--suave); font-weight: 600; font-size: 0.85rem; }
+
+@media (max-width: 640px) {
+  .container { margin: 0; border-radius: 0; padding: 1.25rem 1rem; }
+  .cadastro { grid-template-columns: 1fr 1fr; }
+  .cadastro label:first-child { grid-column: 1 / -1; }
 }

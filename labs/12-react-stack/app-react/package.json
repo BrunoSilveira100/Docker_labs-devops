@@ -1,6 +1,8 @@
 {
   "name": "app-react-lab12",
-  "version": "1.0.0",
+  "version": "1.1.0",
+  "description": "Lab 12: app React (Vite) para dev com hot reload e build de producao",
+  "author": "Bruno Silveira",
   "private": true,
   "type": "module",
   "scripts": {
