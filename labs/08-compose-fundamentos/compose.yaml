@@ -1,30 +1,51 @@
+# Prática 08 — Docker Compose: fundamentos
+# Migra as práticas 06 (Apache) e 07 (Nginx + backend) para um único arquivo.
+# Formato moderno do Compose: sem a chave legada "version:".
 name: lab08-compose-fundamentos
 
 services:
   apache:
-    image: httpd:2.4
+    image: httpd:2.4                 # tag fixada na major/minor 2.4
     ports:
       - "8080:80"
     volumes:
-      - ./apache/site:/usr/local/apache2/htdocs
+      # bind mounts: conteúdo e config vêm do host (ideal para desenvolvimento)
+      - ./apache/site:/usr/local/apache2/htdocs:ro
       - ./apache/conf/httpd.conf:/usr/local/apache2/conf/httpd.conf:ro
+    healthcheck:
+      # a imagem httpd (Debian) não tem curl/wget: valida a sintaxe e o processo
+      test: ["CMD-SHELL", "httpd -t && pidof httpd >/dev/null"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+    restart: unless-stopped
     networks:
       - rede-lab08
 
   backend:
-    build: ./backend
+    build: ./backend                 # HEALTHCHECK definido no próprio Dockerfile
+    image: backend-lab08:1.0
+    restart: unless-stopped
     networks:
-      - rede-lab08
+      - rede-lab08                   # sem "ports": só acessível via Nginx
 
   nginx:
-    image: nginx:alpine
+    image: nginx:1.31-alpine
     ports:
       - "8081:80"
     volumes:
       - ./nginx/site:/usr/share/nginx/html:ro
       - ./nginx/conf/nginx.conf:/etc/nginx/nginx.conf:ro
     depends_on:
-      - backend
+      backend:
+        condition: service_healthy   # só sobe quando a API responde /status
+    healthcheck:
+      # 127.0.0.1 e não "localhost": o nginx.conf só escuta IPv4
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1/"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+    restart: unless-stopped
     networks:
       - rede-lab08
 

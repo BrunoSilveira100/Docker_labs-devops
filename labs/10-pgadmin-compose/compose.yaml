@@ -1,3 +1,5 @@
+# Prática 10 — pgAdmin + PostgreSQL via Compose
+# Senhas ficam SÓ no .env (ignorado pelo git); o .env.example é o modelo versionado.
 name: lab10-pgadmin-compose
 
 services:
@@ -5,15 +7,19 @@ services:
     image: postgres:16-alpine
     env_file: .env
     volumes:
-      - pgdata:/var/lib/postgresql/data
-      - ./init:/docker-entrypoint-initdb.d:ro
+      - pgdata:/var/lib/postgresql/data              # volume nomeado: dados gerenciados
+      - ./init:/docker-entrypoint-initdb.d:ro         # só roda com o volume VAZIO
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+      # $$ = lê a variável do ambiente do container em tempo de execução
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
       interval: 5s
       timeout: 5s
-      retries: 5
+      retries: 10
+      start_period: 10s
+    restart: unless-stopped
     networks:
       - rede-lab10
+    # sem "ports": o banco só é acessível pela rede interna (pgAdmin usa host "db")
 
   pgadmin:
     image: dpage/pgadmin4:8
@@ -31,6 +37,14 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    healthcheck:
+      # /misc/ping responde "PING" quando o servidor web do pgAdmin está pronto
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:80/misc/ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    restart: unless-stopped
     networks:
       - rede-lab10
 

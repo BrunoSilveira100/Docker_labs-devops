@@ -1,3 +1,13 @@
+# Prática 14 — Projeto integrador
+# React (Nginx) -> API (Node) -> PostgreSQL, com pgAdmin para inspeção.
+#
+# Topologia de rede por camada (isolamento de tráfego):
+#   rede-frontend : frontend <-> backend
+#   rede-backend  : backend  <-> db <-> pgadmin   (internal: sem saída para a internet)
+# O frontend NÃO enxerga o banco; o banco NÃO publica porta no host.
+#
+# Segredos: nenhuma senha neste arquivo. Tudo vem do .env (ignorado pelo git),
+# criado a partir do .env.example.
 name: lab14-projeto-integrador
 
 services:
@@ -5,15 +15,18 @@ services:
     image: postgres:16-alpine
     env_file: .env
     volumes:
-      - pgdata:/var/lib/postgresql/data
-      - ./init:/docker-entrypoint-initdb.d:ro
+      - pgdata:/var/lib/postgresql/data          # volume nomeado: dados persistem
+      - ./init:/docker-entrypoint-initdb.d:ro     # só roda com o volume VAZIO
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+      # $$ = variável lida dentro do container, em tempo de execução
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
       interval: 5s
       timeout: 5s
-      retries: 5
+      retries: 10
+      start_period: 10s
+    restart: unless-stopped
     networks:
-      - rede-integrador
+      - rede-backend
 
   pgadmin:
     image: dpage/pgadmin4:8
@@ -30,36 +43,54 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:80/misc/ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    restart: unless-stopped
     networks:
-      - rede-integrador
+      - rede-backend
+      - rede-pgadmin   # rede comum (não internal) só para publicar a porta 8083
 
   backend:
     build: ./backend
-    env_file: .env
+    image: backend-lab14:1.0
+    env_file: .env      # POSTGRES_USER / POSTGRES_PASSWORD / POSTGRES_DB
     environment:
-      PGHOST: db
-      PGUSER: ${POSTGRES_USER}
-      PGPASSWORD: ${POSTGRES_PASSWORD}
-      PGDATABASE: ${POSTGRES_DB}
+      PGHOST: db        # nome do serviço na rede-backend (DNS do Compose)
     depends_on:
       db:
         condition: service_healthy
+    # HEALTHCHECK definido no Dockerfile (GET /status)
+    restart: unless-stopped
     networks:
-      - rede-integrador
+      - rede-backend    # fala com o banco
+      - rede-frontend   # recebe o proxy do Nginx
 
   frontend:
     build: ./frontend
+    image: frontend-lab14:1.0
     ports:
       - "8084:80"
     depends_on:
-      - backend
+      backend:
+        condition: service_healthy   # o proxy /api só sobe com a API pronta
+    # HEALTHCHECK definido no Dockerfile (GET /)
+    restart: unless-stopped
     networks:
-      - rede-integrador
+      - rede-frontend
 
 volumes:
   pgdata:
   pgadmin_data:
 
 networks:
-  rede-integrador:
+  rede-frontend:
+    driver: bridge
+  rede-backend:
+    driver: bridge
+    internal: true     # banco e API sem rota para fora: menor superfície de ataque
+  rede-pgadmin:
     driver: bridge

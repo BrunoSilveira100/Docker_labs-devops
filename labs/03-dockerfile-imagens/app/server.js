@@ -9,6 +9,8 @@ const servidor = http.createServer((req, res) => {
     JSON.stringify(
       {
         mensagem: "Ola, Unifeg! Servidor rodando dentro de um container.",
+        autor: "Bruno Silveira",
+        usuarioLinux: os.userInfo().username,
         hostname: os.hostname(),
         plataforma: os.platform(),
         versaoNode: process.version,

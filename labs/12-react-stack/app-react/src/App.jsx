@@ -6,6 +6,7 @@ export default function App() {
   return (
     <main className="container">
       <h1>Unifeg — React dentro de um container</h1>
+      <p className="autor">Lab 12 · Bruno Silveira</p>
       <p>
         Edite este arquivo (<code>src/App.jsx</code>) com o container rodando
         e observe o hot reload acontecer sem rebuild da imagem.

@@ -1,0 +1,10 @@
+# O contexto de build é a pasta do lab: sem isto, um node_modules/dist do host
+# (criado ao rodar npm install fora do container) iria para dentro da imagem.
+**/node_modules
+**/dist
+**/npm-debug.log*
+.git
+.env
+.env.*
+compose.yaml
+README.md

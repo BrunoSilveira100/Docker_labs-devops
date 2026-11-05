@@ -26,3 +26,28 @@ th, td {
   padding: 0.4rem 0.6rem;
   border-bottom: 1px solid #333;
 }
+
+.autor {
+  color: #61dafb;
+  font-size: 0.9rem;
+}
+
+.cadastro {
+  display: grid;
+  grid-template-columns: 2fr 1fr 70px auto;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+}
+
+.cadastro input {
+  padding: 0.5rem;
+  border-radius: 4px;
+  border: 1px solid #333;
+  background: #0f0f1f;
+  color: #e6e6e6;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
