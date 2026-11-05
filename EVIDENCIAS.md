@@ -51,7 +51,7 @@ ingênuo (só ganhou `ENV IMAGEM_VARIANTE`) e o Lab 02 continua rodando como roo
 | **07** Nginx | `/api/status` OK; `/api/info` mostra `xRealIp`/`xForwardedFor` (prova do proxy); rota inexistente → 404 em JSON; backend `healthy` como `node` | ✅ |
 | **08** Compose | 3 serviços `healthy`; o Nginx sobe ~5 s depois, quando o backend fica `healthy`; títulos e `backend-lab08` próprios | ✅ |
 | **09** PostgreSQL | 5 alunos do novo seed (`BS2026-001…005`, 3 cursos); view `vw_resumo_turmas` com 4 turmas; `CHECK` rejeitou período 12; 6 alunos depois de recriar o container | ✅ |
-| **10** pgAdmin | `db` e `pgadmin` `healthy`; importou o servidor "Lab 10 · Postgres (Bruno Silveira)" no grupo "Unifeg 2026B — Bruno Silveira"; o psql do pgAdmin autenticou no `db` | ✅ (login na UI: manual) |
+| **10** pgAdmin | `db` e `pgadmin` `healthy`; importou o servidor "Lab 10 · Postgres (Bruno Silveira)" no grupo "Unifeg 2026B — Bruno Silveira"; o psql do pgAdmin autenticou no `db` | ✅ |
 | **11** Multi-stage | **single = 1,65 GB** (root, com tsc) vs **multi = 193 MB** (node, sem tsc), **~88% menor**; a API informa `"imagem":"single-stage"` ou `"multi-stage"` | ✅ |
 | **12** React | Dev `healthy` e `[vite] hmr update /src/App.jsx`. Prod: assets com `Cache-Control: public, immutable` + gzip; `index.html` com `no-cache` e cabeçalhos de segurança; rota SPA 200 | ✅ |
 | **13** Registry/Secrets | `appuser`, `rodandoComoRoot: false`; segredo fora do `env`; `ReadonlyRootfs=true` (`touch /app/x` → read-only), `/tmp` gravável; `CapEff: 0000000000000000`; `no-new-privileges`; 0.5 CPU / 128 MiB; push/pull no registry local | ✅ |
@@ -90,7 +90,15 @@ ingênuo (só ganhou `ENV IMAGEM_VARIANTE`) e o Lab 02 continua rodando como roo
 | Senha no `compose.yaml` | nenhuma |
 | Imagens | `frontend-lab14` = 93,8 MB, `backend-lab14` = 194 MB |
 
-**Login na UI do pgAdmin** (`localhost:8083`): verificar manualmente com as credenciais do `.env`.
+**Login no pgAdmin** (`localhost:8083`): validado por script executado dentro do container, que segue o fluxo da interface com as credenciais do `.env` (sem exibi-las):
+
+| Etapa | Resultado |
+|---|---|
+| Página de login | HTTP 200 |
+| Login com `PGADMIN_DEFAULT_EMAIL` e `PGADMIN_DEFAULT_PASSWORD` | OK |
+| Servidor pré-cadastrado no painel | grupo "Unifeg 2026B — Bruno Silveira" → "Lab 14 · Projeto Integrador (Bruno Silveira)" |
+| Conexão ao servidor com `POSTGRES_PASSWORD` | OK (PostgreSQL 16.15) |
+| Senha errada (contraprova) | recusada |
 
 ---
 
